@@ -57,12 +57,12 @@ mv script4 start
 chmod +x start
 clear
 printf "\n\n\tScript By David Isztl & Michel Basili\n\n"
-printf "Complimenti, molto probabilmente l'installazione è andato a buon fine.\n"
+printf "Complimenti, molto probabilmente l'installazione è andata a buon fine.\n"
 printf "Come testare se funziona:\n\tAprire un altro terminale e lanciare il comando: nc 127.0.0.1 799\n"
 printf "Se funziona allora nel file /home/ssllogmux/ssllogmux.txt ci sarà tutto ciò che scriverete.\n\n\n"
 printf "<-------------Server in ascolto...------------->\n"
 ./start
 else
-printf "Installazione annullato"
+printf "Installazione annullata\n"
   exit 0
 fi
