@@ -1,4 +1,12 @@
 #!/bin/bash
+clear
+printf "\n\n\tBenvenuto, script by David Isztl & Michel Basili\n\n"
+printf "Questo script installerà:\n\tSSHD modificato\n\tSTUNNEL\n\tssllogmux\n\tBRO (prossimamente)\nCon le relative dipendenze\n"
+printf "Script testato su Centos 6.x\n"
+read -p "Sei sicuro di voler procedere? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+then
+clear
 yum groupinstall "Development tools" -y
 yum install wget zlib-devel openssl-devel ncurses-devel file-libs file-devel python-devel libpcap-devel -y
 cd /home
@@ -50,7 +58,11 @@ mv script4 start
 chmod +x start
 clear
 printf "\n\n\tScript By David Isztl & Michel Basili\n\n"
+printf "Complimenti, molto probabilmente l'installazione è andato a buon fine.\n"
 printf "Come testare se funziona:\n\tAprire un altro terminale e lanciare il comando: nc 127.0.0.1 799\n"
 printf "Se funziona allora nel file /home/ssllogmux/ssllogmux.txt ci sarà tutto ciò che scriverete.\n\n\n"
 printf "<-------------Server in ascolto...------------->\n"
 ./start
+else
+  exit 0
+fi
