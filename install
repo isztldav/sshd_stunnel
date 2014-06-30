@@ -30,10 +30,7 @@ mv script2 /etc/init.d/stunnel
 chmod +x /etc/init.d/stunnel
 chkconfig --add stunnel
 service stunnel start
-#perl -MCPAN -e install Proc::PID::File
-#perl -MCPAN -e install Proc::ProcessTable
-#perl -MCPAN -e install Proc::Daemon
-#perl -MCPAN -e install IO::Socket::SSL
+wget -O - http://cpanmin.us | perl - --self-upgrade
 wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/cpan_install_auto
 chmod +x cpan_install_auto
 ./cpan_install_auto
@@ -51,4 +48,8 @@ cd /home/ssllogmux
 wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
 mv script4 start
 chmod +x start
+clear
+printf "\n\n\tScript By David Isztl & Michel Basili\n\n"
+printf "Come testare se funziona\nAPrire un altro terminale e lancire il comando: nc 127.0.0.1 799\n"
+print "Se funziona allora nel file /home/ssllogmux/ssllogmux.txt ci sarà tutto ciò che scrivete."
 ./start
