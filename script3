@@ -1,0 +1,2 @@
+#!/bin/bash
+perl ssllogmux -d -f -k /home/ssllogmux/server-key.pem -c /home/ssllogmux/SSL.pm
