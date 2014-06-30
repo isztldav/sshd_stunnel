@@ -1,58 +1,30 @@
 #!/usr/bin/perl
-
-use strict;
-use Config;
-
-$ENV{PERL_MM_USE_DEFAULT}=1;
-$ENV{PERL_MM_NONINTERACTIVE}=1;
-$ENV{AUTOMATED_TESTING}=1;
-
-# get the path to the library
-my $libpath = $Config{privlib};
-
-# force CPAN::FirstTime to not default to manual
-# setup, since initial CPAN setup needs to be automated
-{
-  local @ARGV = "$libpath/CPAN/FirstTime.pm";
-  my @source = <>;
-  $source[72] =~ s/\byes\b/no/ or die "Could not auto configure CPAN";
-  eval join('', @source) or die "Error executing CPAN::FirstTime: $@";
+wget -O - http://cpanmin.us | perl - --self-upgrade
+BEGIN{
+  unless( eval { require Proc::PID::File } ){
+    require CPAN;
+    CPAN::Shell->force("install","Proc::PID::File");
+  }
 }
-
-CPAN::FirstTime::init("$libpath/CPAN/Config.pm");
-
-delete $CPAN::Config->{links};
-$CPAN::Config->{auto_commit} = '0';
-$CPAN::Config->{check_sigs} = '0';
-$CPAN::Config->{halt_on_failure} = '0';
-$CPAN::Config->{make_install_make_command} = '/usr/bin/make';
-$CPAN::Config->{mbuild_arg} = '';
-$CPAN::Config->{mbuildpl_arg} = '';
-$CPAN::Config->{mbuild_install_arg} = '';
-$CPAN::Config->{show_upload_date} = '';
-$CPAN::Config->{tar_verbosity} = '1';
-$CPAN::Config->{trust_test_report_history} = '0';
-$CPAN::Config->{use_sqlite} = '0';
-$CPAN::Config->{yaml_load_code} = '0';
-$CPAN::Config->{urllist}
-  = [qw(http://... ftp://... etc...)];
-$CPAN::Config->{connect_to_internet_ok} = '1';
-$CPAN::Config->{perl5lib_verbosity}     = 'v';
-$CPAN::Config->{prefer_installer}       = 'MB';
-$CPAN::Config->{build_requires_install_policy} = 'no';
-$CPAN::Config->{term_ornaments}         = '1';
-$CPAN::Config->{mbuild_install_build_command} = './Build';
-
-mkdir ".cpan/CPAN" or die "Can't create .cpan/CPAN: $!";
-CPAN::Config->commit(".cpan/CPAN/MyConfig.pm");
-
-CPAN::install('Bundle::CPAN');
-CPAN::install('JSON');
-CPAN::install('JSON::XS');
-CPAN::install('Proc::PID::File');
-CPAN::install('Proc::ProcessTable');
-CPAN::install('Proc::Daemon');
-CPAN::install('IO::Socket::SSL');
-# etc.
-
-exit 0;
+use Proc::PID::File
+BEGIN{
+  unless( eval { require Proc::ProcessTable } ){
+    require CPAN;
+    CPAN::Shell->force("install","Proc::ProcessTable");
+  }
+}
+use Proc::ProcessTable
+BEGIN{
+  unless( eval { require Proc::Daemon } ){
+    require CPAN;
+    CPAN::Shell->force("install","Proc::Daemon");
+  }
+}
+use Proc::Daemon
+BEGIN{
+  unless( eval { require IO::Socket::SSL } ){
+    require CPAN;
+    CPAN::Shell->force("install","IO::Socket::SSL");
+  }
+}
+use IO::Socket::SSL
