@@ -38,7 +38,7 @@ wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/cpan_install_
 chmod +x cpan_install_auto
 ./cpan_install_auto
 mkdir /home/ssllogmux
-cp /home/openssh-5.8p1-hpn13v11-3.10/aux/ssllogmux /home/ssllogmux/
+#cp /home/openssh-5.8p1-hpn13v11-3.10/aux/ssllogmux /home/ssllogmux/
 wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script3
 mv script3 /home/ssllogmux/ssllogmux
 openssl genrsa -out privatekey.pem 1024
