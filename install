@@ -30,10 +30,13 @@ mv script2 /etc/init.d/stunnel
 chmod +x /etc/init.d/stunnel
 chkconfig --add stunnel
 service stunnel start
-perl -MCPAN -e install Proc::PID::File
-perl -MCPAN -e install Proc::ProcessTable
-perl -MCPAN -e install Proc::Daemon
-perl -MCPAN -e install IO::Socket::SSL
+#perl -MCPAN -e install Proc::PID::File
+#perl -MCPAN -e install Proc::ProcessTable
+#perl -MCPAN -e install Proc::Daemon
+#perl -MCPAN -e install IO::Socket::SSL
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/cpan_install_auto
+chmod +x cpan_install_auto
+./cpan_install_auto
 mkdir /home/ssllogmux
 cp /home/openssh-5.8p1-hpn13v11-3.10/aux/ssllogmux /home/ssllogmux/
 wget http://pastebin.com/raw.php?i=MZNhB3Ub
