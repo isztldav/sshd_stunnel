@@ -8,5 +8,4 @@ Testato su Centos 6.x
 
 Come installare:
 chmod +x install
-
 /install
