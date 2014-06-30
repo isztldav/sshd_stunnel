@@ -39,8 +39,8 @@ chmod +x cpan_install_auto
 ./cpan_install_auto
 mkdir /home/ssllogmux
 cp /home/openssh-5.8p1-hpn13v11-3.10/aux/ssllogmux /home/ssllogmux/
-wget http://pastebin.com/raw.php?i=MZNhB3Ub
-mv raw.php\?i\=MZNhB3Ub /home/ssllogmux/ssllogmux
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script3
+mv script3 /home/ssllogmux/ssllogmux
 openssl genrsa -out privatekey.pem 1024
 openssl req -new -x509 -key privatekey.pem -out cacert.pem -days 1095
 cat privatekey.pem cacert.pem >> /home/ssllogmux/server-key.pem
@@ -48,7 +48,7 @@ cat privatekey.pem cacert.pem >> /home/ssllogmux/SSL.pm
 chmod 600 /home/ssllogmux/server-key.pem
 chmod 600 /home/ssllogmux/SSL.pm
 cd /home/ssllogmux
-wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script3
-mv script3 start
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
+mv script4 start
 chmod +x start
 ./start
