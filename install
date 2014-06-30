@@ -1,6 +1,5 @@
 #!/bin/bash
-clear
-printf "\n\n\tBenvenuto, script by David Isztl & Michel Basili\n\n"
+printf "Benvenuto, script by David Isztl & Michel Basili\n\n"
 printf "Questo script installerà:\n\tSSHD modificato\n\tSTUNNEL\n\tssllogmux\n\tBRO (prossimamente)\nCon le relative dipendenze\n"
 printf "Script testato su Centos 6.x\n"
 read -p "Sei sicuro di voler procedere? <y/N> " prompt
@@ -64,5 +63,6 @@ printf "Se funziona allora nel file /home/ssllogmux/ssllogmux.txt ci sarà tutto
 printf "<-------------Server in ascolto...------------->\n"
 ./start
 else
+printf "Installazione annullato"
   exit 0
 fi
