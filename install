@@ -1,0 +1,51 @@
+#!/bin/bash
+yum groupinstall "Development tools" -y
+yum install wget zlib-devel openssl-devel ncurses-devel file-libs file-devel python-devel libpcap-devel -y
+cd /home
+wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+rpm -ivh epel-release-6-8.noarch.rpm
+yum install libnet cpan cmake nc -y
+cd /home
+wget  https://auditing-sshd.googlecode.com/files/openssh-5.8p1-hpn13v11-3.10.tar.gz
+tar -zxvf openssh-5.8p1-hpn13v11-3.10.tar.gz
+rm openssh-5.8p1-hpn13v11-3.10.tar.gz
+cd openssh-5.8p1-hpn13v11-3.10/openssh-5.8p1-hpn13v11
+./configure
+make
+make install
+service sshd restart
+yum install stunnel -y
+openssl genrsa -out privatekey.pem 1024
+openssl req -new -x509 -key privatekey.pem -out cacert.pem -days 1095
+cat privatekey.pem cacert.pem >> /etc/stunnel/stunnel.pem
+chmod 600 /etc/stunnel/stunnel.pem
+mkdir /var/run/stunnel
+chown nobody.nobody /var/run/stunnel
+sudo cp /usr/share/doc/stunnel*/stunnel.conf-sample
+cp /usr/share/doc/stunnel-4.29/stunnel.conf-sample /etc/stunnel/stunnel.conf
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script1
+mv script1 /etc/stunnel/stunnel.conf
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script2
+mv script2 /etc/init.d/stunnel
+chmod +x /etc/init.d/stunnel
+chkconfig --add stunnel
+service stunnel start
+perl -MCPAN -e install Proc::PID::File
+perl -MCPAN -e install Proc::ProcessTable
+perl -MCPAN -e install Proc::Daemon
+perl -MCPAN -e install IO::Socket::SSL
+mkdir /home/ssllogmux
+cp /home/openssh-5.8p1-hpn13v11-3.10/aux/ssllogmux /home/ssllogmux/
+wget http://pastebin.com/raw.php?i=MZNhB3Ub
+mv raw.php\?i\=MZNhB3Ub /home/ssllogmux/ssllogmux
+openssl genrsa -out privatekey.pem 1024
+openssl req -new -x509 -key privatekey.pem -out cacert.pem -days 1095
+cat privatekey.pem cacert.pem >> /home/ssllogmux/server-key.pem
+cat privatekey.pem cacert.pem >> /home/ssllogmux/SSL.pm
+chmod 600 /home/ssllogmux/server-key.pem
+chmod 600 /home/ssllogmux/SSL.pm
+cd /home/ssllogmux
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script3
+mv script3 start
+chmod +x start
+./start
