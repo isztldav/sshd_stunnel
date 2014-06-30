@@ -7,5 +7,6 @@ Questo script imposterà automaticamente tutte le configurazioni o dipendenze ne
 Testato su Centos 6.x
 
 Come installare:
-chmod +x install
-lanciare ./install
+$ wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/install
+$ chmod +x install
+$ ./install
