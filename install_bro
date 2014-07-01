@@ -1,0 +1,17 @@
+#!/bin/bash
+mkdir /home/bro_inst
+cd /home/bro_inst
+wget http://www.bro.org/downloads/release/Bro-2.3-Linux-x86_64.rpm
+yum localinstall Bro-*.rpm -y
+cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_auth.bro /opt/bro/share/bro/site
+cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_const.bro /opt/bro/share/bro/site
+cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_core.bro /opt/bro/share/bro/site
+cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_policy.bro /opt/bro/share/bro/site
+cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_sftp.bro /opt/bro/share/bro/site
+touch /opt/bro/share/bro/site/isshd.bro
+echo @load sshd_core >> /opt/bro/share/bro/site/isshd.bro
+echo @load sshd_const >> /opt/bro/share/bro/site/isshd.bro
+echo @load sshd_auth >> /opt/bro/share/bro/site/isshd.bro
+echo @load sshd_policy >> /opt/bro/share/bro/site/isshd.bro
+echo @load sshd_sftp >> /opt/bro/share/bro/site/isshd.bro
+vi /opt/bro/etc/broctl.cfg
