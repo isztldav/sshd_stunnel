@@ -77,7 +77,7 @@ rm /opt/bro/etc/broctl.cfg
 cp conf_bro /opt/bro/etc/broctl.cfg
 rm /opt/bro/share/bro/site/sshd_core.bro
 wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/ssh_core
-cp ssh_core opt/bro/share/bro/site/sshd_core.bro
+cp ssh_core /opt/bro/share/bro/site/sshd_core.bro
 /opt/bro/bin/broctl install
 /opt/bro/bin/broctl check
 /opt/bro/bin/broctl start
