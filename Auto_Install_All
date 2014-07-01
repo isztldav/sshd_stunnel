@@ -1,0 +1,99 @@
+#!/bin/bash
+printf "Benvenuto, script by David Isztl & Michel Basili\n"
+printf "Questo script installerà:\n\tSSHD modificato\n\tSTUNNEL\n\tssllogmux\n\tBRO (prossimamente)\nCon le relative dipendenze\n"
+printf "Script testato su Centos 6.x\n"
+read -p "Sei sicuro di voler procedere? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+then
+clear
+yum groupinstall "Development tools" -y
+yum install wget zlib-devel openssl-devel ncurses-devel file-libs file-devel python-devel libpcap-devel -y
+cd /home
+wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+rpm -ivh epel-release-6-8.noarch.rpm
+yum install libnet cpan cmake nc -y
+cd /home
+wget  https://auditing-sshd.googlecode.com/files/openssh-5.8p1-hpn13v11-3.10.tar.gz
+tar -zxvf openssh-5.8p1-hpn13v11-3.10.tar.gz
+rm openssh-5.8p1-hpn13v11-3.10.tar.gz
+cd openssh-5.8p1-hpn13v11-3.10/openssh-5.8p1-hpn13v11
+./configure
+make
+make install
+service sshd restart
+yum install stunnel -y
+openssl genrsa -out privatekey.pem 1024
+openssl req -new -x509 -key privatekey.pem -out cacert.pem -days 1095
+cat privatekey.pem cacert.pem >> /etc/stunnel/stunnel.pem
+chmod 600 /etc/stunnel/stunnel.pem
+mkdir /var/run/stunnel
+chown nobody.nobody /var/run/stunnel
+sudo cp /usr/share/doc/stunnel*/stunnel.conf-sample
+cp /usr/share/doc/stunnel-4.29/stunnel.conf-sample /etc/stunnel/stunnel.conf
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script1
+mv script1 /etc/stunnel/stunnel.conf
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script2
+mv script2 /etc/init.d/stunnel
+chmod +x /etc/init.d/stunnel
+chkconfig --add stunnel
+service stunnel start
+wget -O - http://cpanmin.us | perl - --self-upgrade
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/cpan_install_auto
+chmod +x cpan_install_auto
+./cpan_install_auto
+mkdir /home/ssllogmux
+#cp /home/openssh-5.8p1-hpn13v11-3.10/aux/ssllogmux /home/ssllogmux/
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script3
+mv script3 /home/ssllogmux/ssllogmux
+openssl genrsa -out privatekey.pem 1024
+openssl req -new -x509 -key privatekey.pem -out cacert.pem -days 1095
+cat privatekey.pem cacert.pem >> /home/ssllogmux/server-key.pem
+cat privatekey.pem cacert.pem >> /home/ssllogmux/SSL.pm
+chmod 600 /home/ssllogmux/server-key.pem
+chmod 600 /home/ssllogmux/SSL.pm
+cd /home/ssllogmux
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
+mv script4 start
+chmod +x start
+mkdir /home/bro_inst
+cd /home/bro_inst
+wget http://www.bro.org/downloads/archive/Bro-2.0-Linux-x86_64.rpm
+yum localinstall Bro-*.rpm -y
+cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy/sshd_auth.bro /opt/bro/share/bro/site
+cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_const.bro /opt/bro/share/bro/site
+cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_core.bro /opt/bro/share/bro/site
+cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_policy.bro /opt/bro/share/bro/site
+cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_sftp.bro /opt/bro/share/bro/site
+cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_input_stream.bro /opt/bro/share/bro/site
+touch /opt/bro/share/bro/site/isshd.bro
+echo @load sshd_core >> /opt/bro/share/bro/site/isshd.bro
+echo @load sshd_const >> /opt/bro/share/bro/site/isshd.bro
+echo @load sshd_auth >> /opt/bro/share/bro/site/isshd.bro
+echo @load sshd_policy >> /opt/bro/share/bro/site/isshd.bro
+echo @load sshd_sftp >> /opt/bro/share/bro/site/isshd.bro
+echo @load sshd_input_stream.bro >> /opt/bro/share/bro/site/isshd.bro
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/conf_bro
+rm /opt/bro/etc/broctl.cfg
+cp conf_bro /opt/bro/etc/broctl.cfg
+rm /opt/bro/share/bro/site/sshd_core.bro
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/ssh_core
+cp ssh_core opt/bro/share/bro/site/sshd_core.bro
+/opt/bro/bin/broctl install
+/opt/bro/bin/broctl check
+/opt/bro/bin/broctl start
+/opt/bro/bin/broctl status
+cd /home/ssllogmux
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
+mv script4 start
+chmod +x start
+clear
+printf "\n\n\tScript By David Isztl & Michel Basili\n\n"
+printf "Complimenti, molto probabilmente l'installazione è andata a buon fine.\n"
+printf "Come testare se funziona:\n\tAprire un altro terminale e lanciare il comando: nc 127.0.0.1 799\n"
+printf "Se funziona allora nel file /home/ssllogmux/ssllogmux.txt ci sarà tutto ciò che scriverete.\n\n\n"
+printf "<-------------Server in ascolto...------------->\n"
+./start
+else
+printf "Installazione annullata\n"
+  exit 0
+fi
