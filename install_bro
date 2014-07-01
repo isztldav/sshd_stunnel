@@ -15,4 +15,10 @@ echo @load sshd_const >> /opt/bro/share/bro/site/isshd.bro
 echo @load sshd_auth >> /opt/bro/share/bro/site/isshd.bro
 echo @load sshd_policy >> /opt/bro/share/bro/site/isshd.bro
 echo @load sshd_sftp >> /opt/bro/share/bro/site/isshd.bro
-vi /opt/bro/etc/broctl.cfg
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/conf_bro
+rm /opt/bro/etc/broctl.cfg
+cp conf_bro /opt/bro/etc/broctl.cfg
+/opt/bro/bin/broctl install
+/opt/bro/bin/broctl check
+/opt/bro/bin/broctl start
+/opt/bro/bin/broctl status
