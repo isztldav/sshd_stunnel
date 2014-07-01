@@ -1,7 +1,6 @@
 #!/bin/bash
 mkdir /home/bro_inst
 cd /home/bro_inst
-#wget http://www.bro.org/downloads/release/Bro-2.3-Linux-x86_64.rpm
 wget http://www.bro.org/downloads/archive/Bro-2.0-Linux-x86_64.rpm
 yum localinstall Bro-*.rpm -y
 cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy/sshd_auth.bro /opt/bro/share/bro/site
@@ -9,15 +8,20 @@ cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_const.bro /opt/bro/shar
 cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_core.bro /opt/bro/share/bro/site
 cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_policy.bro /opt/bro/share/bro/site
 cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_sftp.bro /opt/bro/share/bro/site
+cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_input_stream.bro /opt/bro/share/bro/site
 touch /opt/bro/share/bro/site/isshd.bro
 echo @load sshd_core >> /opt/bro/share/bro/site/isshd.bro
 echo @load sshd_const >> /opt/bro/share/bro/site/isshd.bro
 echo @load sshd_auth >> /opt/bro/share/bro/site/isshd.bro
 echo @load sshd_policy >> /opt/bro/share/bro/site/isshd.bro
 echo @load sshd_sftp >> /opt/bro/share/bro/site/isshd.bro
+echo @load sshd_input_stream.bro >> /opt/bro/share/bro/site/isshd.bro
 wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/conf_bro
 rm /opt/bro/etc/broctl.cfg
 cp conf_bro /opt/bro/etc/broctl.cfg
+rm /opt/bro/share/bro/site/sshd_core.bro
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/ssh_core
+cp ssh_core opt/bro/share/bro/site/sshd_core.bro
 /opt/bro/bin/broctl install
 /opt/bro/bin/broctl check
 /opt/bro/bin/broctl start
