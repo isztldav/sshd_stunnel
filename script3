@@ -80,7 +80,7 @@ my $errors = 0;
 
 # Default values for port and output filename
 $op{'p'} = 1799;
-$op{'o'} = 'ssllogmux.txt';
+$op{'o'} = 'ssllogmux.log';
 
 # trap control-c and whatnot and close sockets before exit
 $SIG{INT} = \&clean_exit;
