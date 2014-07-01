@@ -39,8 +39,8 @@ socket = r:TCP_NODELAY=1
 ;CRLfile = /etc/stunnel/crls.pem
 
 ; Some debugging stuff useful for troubleshooting
-;debug = 7
-;output = stunnel.log
+debug = 7
+output = stunnel.log
 
 ; Use it for client mode
 client = yes
