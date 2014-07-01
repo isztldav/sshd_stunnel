@@ -1,7 +1,8 @@
 #!/bin/bash
 mkdir /home/bro_inst
 cd /home/bro_inst
-wget http://www.bro.org/downloads/release/Bro-2.3-Linux-x86_64.rpm
+#wget http://www.bro.org/downloads/release/Bro-2.3-Linux-x86_64.rpm
+wget http://www.bro.org/downloads/archive/Bro-2.0-Linux-x86_64.deb
 yum localinstall Bro-*.rpm -y
 cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_auth.bro /opt/bro/share/bro/site
 cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_const.bro /opt/bro/share/bro/site
