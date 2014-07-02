@@ -123,8 +123,11 @@ printf "\n\n\tScript By David Isztl & Michel Basili\n\n"
 printf "Complimenti, molto probabilmente l'installazione è andata a buon fine.\n"
 printf "Come testare se funziona:\n\tAprire un altro terminale e lanciare il comando: nc 127.0.0.1 799\n"
 printf "Se funziona allora nel file /home/ssllogmux/ssllogmux.log ci sarà tutto ciò che scriverete.\n\n\n"
-printf "<-------------Server in ascolto...------------->\n"
-./start
+#printf "<-------------Server in ascolto...------------->\n"
+#./start
+printf "Fra 10 secondi mi killo...\n"
+sleep 10
+reboot
 ######## FINE PASSO 7
 else
 printf "Installazione annullata\n"
