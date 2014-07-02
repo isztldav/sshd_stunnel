@@ -27,15 +27,15 @@ yum remove openssh* -y
 else
 printf "Non disinstallo openssh..."
 fi
-read -p "Vuoi installarlo per centos <6 o 6<? <a/b> " prompt
-if [[ $prompt == "b"]]
-then
-printf "6<\n"
-./configure --prefix=/opt --sysconfdir=/etc/ssh
-else
-printf ">6\n"
+#read -p "Vuoi installarlo per centos <6 o 6<? <a/b> " prompt
+#if [[ $prompt == "b"]]
+#then
+#printf "6<\n"
+#./configure --prefix=/opt --sysconfdir=/etc/ssh
+#else
+#printf ">6\n"
 ./configure
-fi
+#fi
 make
 make install
 service sshd restart
