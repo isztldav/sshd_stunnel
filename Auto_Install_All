@@ -40,6 +40,8 @@ make
 make install
 wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/sshd_start
 mv sshd_start /etc/init.d/sshd
+chmod +x /etc/init.d/sshd
+chkconfig --add /etc/init.d/sshd
 cp /usr/local/etc/sshd_config /etc/ssh/sshd_config
 service sshd restart
 ######## FINE PASSO 2
