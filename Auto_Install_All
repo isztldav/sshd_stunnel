@@ -8,15 +8,15 @@ then
 clear
 ######## PASSO 1: INSTALLAZIONE DIPENDENZE
 yum groupinstall "Development tools" -y
-yum install wget zlib-devel openssl-devel ncurses-devel file-libs file-devel python-devel libpcap-devel -y
+yum install wget --no-check-certificate zlib-devel openssl-devel ncurses-devel file-libs file-devel python-devel libpcap-devel -y
 cd /home
-wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+wget --no-check-certificate http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 rpm -ivh epel-release-6-8.noarch.rpm
 yum install libnet cpan cmake nc -y
 ######## FINE PASSO 1
 ######## PASSO 2: Installazione openssh 5.8 modificato
 cd /home
-wget  https://auditing-sshd.googlecode.com/files/openssh-5.8p1-hpn13v11-3.10.tar.gz
+wget --no-check-certificate  https://auditing-sshd.googlecode.com/files/openssh-5.8p1-hpn13v11-3.10.tar.gz
 tar -zxvf openssh-5.8p1-hpn13v11-3.10.tar.gz
 rm openssh-5.8p1-hpn13v11-3.10.tar.gz
 cd openssh-5.8p1-hpn13v11-3.10/openssh-5.8p1-hpn13v11
@@ -47,23 +47,23 @@ mkdir /var/run/stunnel
 chown nobody.nobody /var/run/stunnel
 sudo cp /usr/share/doc/stunnel*/stunnel.conf-sample
 cp /usr/share/doc/stunnel-*/stunnel.conf-sample /etc/stunnel/stunnel.conf
-wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script1
+wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script1
 mv script1 /etc/stunnel/stunnel.conf
-wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script2
+wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script2
 mv script2 /etc/init.d/stunnel
 chmod +x /etc/init.d/stunnel
 chkconfig --add stunnel
 service stunnel start
 ######## FINE PASSO 3
 ######## PASSO 4: Installazione cpan
-wget -O - http://cpanmin.us | perl - --self-upgrade
-wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/cpan_install_auto
+wget --no-check-certificate -O - http://cpanmin.us | perl - --self-upgrade
+wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/cpan_install_auto
 chmod +x cpan_install_auto
 ./cpan_install_auto
 ######## FINE PASSO 4
 ######## PASSO 5: Installazione ssllogmux
 mkdir /home/ssllogmux
-wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script3
+wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script3
 mv script3 /home/ssllogmux/ssllogmux
 openssl genrsa -out privatekey.pem 1024
 openssl req -new -x509 -key privatekey.pem -out cacert.pem -days 1095
@@ -72,14 +72,14 @@ cat privatekey.pem cacert.pem >> /home/ssllogmux/SSL.pm
 chmod 600 /home/ssllogmux/server-key.pem
 chmod 600 /home/ssllogmux/SSL.pm
 cd /home/ssllogmux
-wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
+wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
 mv script4 start
 chmod +x start
 ######## FINE PASSO 5
 ######## PASSO 6: Installazione di bro
 mkdir /home/bro_inst
 cd /home/bro_inst
-wget http://www.bro.org/downloads/archive/Bro-2.0-Linux-x86_64.rpm
+wget --no-check-certificate http://www.bro.org/downloads/archive/Bro-2.0-Linux-x86_64.rpm
 yum localinstall Bro-*.rpm -y
 cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy/sshd_auth.bro /opt/bro/share/bro/site
 cp /home/openssh-5.8p1-hpn13v11-3.10/bro_policy_2.0/sshd_const.bro /opt/bro/share/bro/site
@@ -94,11 +94,11 @@ echo @load sshd_auth >> /opt/bro/share/bro/site/isshd.bro
 echo @load sshd_policy >> /opt/bro/share/bro/site/isshd.bro
 echo @load sshd_sftp >> /opt/bro/share/bro/site/isshd.bro
 echo @load sshd_input_stream.bro >> /opt/bro/share/bro/site/isshd.bro
-wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/conf_bro
+wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/conf_bro
 rm /opt/bro/etc/broctl.cfg
 cp conf_bro /opt/bro/etc/broctl.cfg
 rm /opt/bro/share/bro/site/sshd_core.bro
-wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/ssh_core
+wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/ssh_core
 cp ssh_core /opt/bro/share/bro/site/sshd_core.bro
 /opt/bro/bin/broctl install
 /opt/bro/bin/broctl check
@@ -107,7 +107,7 @@ cp ssh_core /opt/bro/share/bro/site/sshd_core.bro
 ######## FINE PASSO 6
 ######## PASSO 7: START ssllogmux
 cd /home/ssllogmux
-wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
+wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
 mv script4 start
 chmod +x start
 clear
