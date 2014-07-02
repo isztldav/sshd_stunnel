@@ -21,12 +21,12 @@ tar -zxvf openssh-5.8p1-hpn13v11-3.10.tar.gz
 rm openssh-5.8p1-hpn13v11-3.10.tar.gz
 cd openssh-5.8p1-hpn13v11-3.10/openssh-5.8p1-hpn13v11
 read -p "Vuoi disinstallare openssh? <y/N> " prompt
-if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
-then
+#if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+#then
 yum remove openssh* -y
-else
-printf "Non disinstallo openssh..."
-fi
+#else
+#printf "Non disinstallo openssh..."
+#fi
 #read -p "Vuoi installarlo per centos <6 o 6<? <a/b> " prompt
 #if [[ $prompt == "b"]]
 #then
@@ -34,10 +34,13 @@ fi
 #./configure --prefix=/opt --sysconfdir=/etc/ssh
 #else
 #printf ">6\n"
-./configure
+./configure --with-nerscmod
 #fi
 make
 make install
+wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/sshd
+mv sshd /etc/init.d/sshd
+cp /usr/local/etc/sshd_config /etc/ssh/sshd_config
 service sshd restart
 ######## FINE PASSO 2
 ######## PASSO 3: Installazione stunnel
