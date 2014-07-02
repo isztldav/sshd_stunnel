@@ -20,7 +20,19 @@ wget  https://auditing-sshd.googlecode.com/files/openssh-5.8p1-hpn13v11-3.10.tar
 tar -zxvf openssh-5.8p1-hpn13v11-3.10.tar.gz
 rm openssh-5.8p1-hpn13v11-3.10.tar.gz
 cd openssh-5.8p1-hpn13v11-3.10/openssh-5.8p1-hpn13v11
+read -p "Vuoi disinstallare openssh? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+then
+yum remove openssh* -y
+else
+fi
+read -p "Vuoi installarlo per centos <6 o 6<? <1/2> " prompt
+if [[ $prompt == "1"]]
+then
 ./configure
+else
+./configure --prefix=/opt --sysconfdir=/etc/ssh
+fi
 make
 make install
 service sshd restart
@@ -34,7 +46,7 @@ chmod 600 /etc/stunnel/stunnel.pem
 mkdir /var/run/stunnel
 chown nobody.nobody /var/run/stunnel
 sudo cp /usr/share/doc/stunnel*/stunnel.conf-sample
-cp /usr/share/doc/stunnel-4.29/stunnel.conf-sample /etc/stunnel/stunnel.conf
+cp /usr/share/doc/stunnel-*/stunnel.conf-sample /etc/stunnel/stunnel.conf
 wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script1
 mv script1 /etc/stunnel/stunnel.conf
 wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script2
