@@ -8,7 +8,7 @@ then
 clear
 ######## PASSO 1: INSTALLAZIONE DIPENDENZE
 yum groupinstall "Development tools" -y
-yum install wget --no-check-certificate zlib-devel openssl-devel ncurses-devel file-libs file-devel python-devel libpcap-devel -y
+yum install wget zlib-devel openssl-devel ncurses-devel file-libs file-devel python-devel libpcap-devel -y
 cd /home
 wget --no-check-certificate http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 rpm -ivh epel-release-6-8.noarch.rpm
