@@ -20,7 +20,7 @@ wget --no-check-certificate  https://auditing-sshd.googlecode.com/files/openssh-
 tar -zxvf openssh-5.8p1-hpn13v11-3.10.tar.gz
 rm openssh-5.8p1-hpn13v11-3.10.tar.gz
 cd openssh-5.8p1-hpn13v11-3.10/openssh-5.8p1-hpn13v11
-read -p "Vuoi disinstallare openssh? <y/N> " prompt
+#read -p "Vuoi disinstallare openssh? <y/N> " prompt
 #if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
 #then
 yum remove openssh* -y
