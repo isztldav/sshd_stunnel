@@ -25,6 +25,7 @@ if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]
 then
 yum remove openssh* -y
 else
+printf "Non disinstallo openssh..."
 fi
 read -p "Vuoi installarlo per centos <6 o 6<? <1/2> " prompt
 if [[ $prompt == "1"]]
