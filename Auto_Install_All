@@ -113,7 +113,7 @@ cp ssh_core /opt/bro/share/bro/site/sshd_core.bro
 /opt/bro/bin/broctl start
 /opt/bro/bin/broctl status
 ######## FINE PASSO 6
-######## PASSO 7: START ssllogmux
+######## PASSO 7: Se tutto ok, allora parte l'ascolto dei log sulla porta 799
 cd /home/ssllogmux
 wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
 mv script4 start
