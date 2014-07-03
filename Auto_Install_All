@@ -143,7 +143,7 @@ unset prompt
 ######## FINE PASSO 6
 ######## PASSO 7: Se tutto ok, allora parte l'ascolto dei log sulla porta 799
 clear
-if (())$passaggi_saltati >= 1))
+if (($passaggi_saltati >= 1))
 then
 	printf "\t\tATTENZIONE, hai saltato %i passaggi\n" $passaggi_saltati
 fi
