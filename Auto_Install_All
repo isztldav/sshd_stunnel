@@ -15,27 +15,16 @@ rpm -ivh epel-release-6-8.noarch.rpm
 yum install libnet cpan cmake nc -y
 ######## FINE PASSO 1
 ######## PASSO 2: Installazione openssh 5.8 modificato
+read -p "Vuoi installare openssh 5.8 modificato? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+then
 cd /home
 wget --no-check-certificate  https://auditing-sshd.googlecode.com/files/openssh-5.8p1-hpn13v11-3.10.tar.gz
 tar -zxvf openssh-5.8p1-hpn13v11-3.10.tar.gz
 rm openssh-5.8p1-hpn13v11-3.10.tar.gz
 cd openssh-5.8p1-hpn13v11-3.10/openssh-5.8p1-hpn13v11
-#read -p "Vuoi disinstallare openssh? <y/N> " prompt
-#if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
-#then
 yum remove openssh* -y
-#else
-#printf "Non disinstallo openssh..."
-#fi
-#read -p "Vuoi installarlo per centos <6 o 6<? <a/b> " prompt
-#if [[ $prompt == "b"]]
-#then
-#printf "6<\n"
-#./configure --prefix=/opt --sysconfdir=/etc/ssh
-#else
-#printf ">6\n"
 ./configure --with-nerscmod
-#fi
 make
 make install
 wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/sshd_start
@@ -44,8 +33,14 @@ chmod +x /etc/init.d/sshd
 chkconfig --add /etc/init.d/sshd
 cp /usr/local/etc/sshd_config /etc/ssh/sshd_config
 service sshd restart
+else
+printf "Installazione openssh 5.8 modificato annullato\n"
+fi
 ######## FINE PASSO 2
 ######## PASSO 3: Installazione stunnel
+read -p "Vuoi installare stunnel? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+then
 yum install stunnel -y
 openssl genrsa -out privatekey.pem 1024
 openssl req -new -x509 -key privatekey.pem -out cacert.pem -days 1095
@@ -62,14 +57,26 @@ mv script2 /etc/init.d/stunnel
 chmod +x /etc/init.d/stunnel
 chkconfig --add stunnel
 service stunnel start
+else
+printf "Installazione stunnel annullato\n"
+fi
 ######## FINE PASSO 3
 ######## PASSO 4: Installazione cpan
+read -p "Vuoi installare cpan? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+then
 wget --no-check-certificate -O - http://cpanmin.us | perl - --self-upgrade
 wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/cpan_install_auto
 chmod +x cpan_install_auto
 ./cpan_install_auto
+else
+printf "Installazione cpan annullato\n"
+fi
 ######## FINE PASSO 4
 ######## PASSO 5: Installazione ssllogmux
+read -p "Vuoi installare ssllogmux? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+then
 mkdir /home/ssllogmux
 wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script3
 mv script3 /home/ssllogmux/ssllogmux
@@ -83,8 +90,14 @@ cd /home/ssllogmux
 wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
 mv script4 start
 chmod +x start
+else
+printf "Installazione ssllogmux annullato\n"
+fi
 ######## FINE PASSO 5
 ######## PASSO 6: Installazione di bro
+read -p "Vuoi installare bro? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+then
 mkdir /home/bro_inst
 cd /home/bro_inst
 wget --no-check-certificate http://www.bro.org/downloads/archive/Bro-2.0-Linux-x86_64.rpm
@@ -112,6 +125,9 @@ cp ssh_core /opt/bro/share/bro/site/sshd_core.bro
 /opt/bro/bin/broctl check
 /opt/bro/bin/broctl start
 /opt/bro/bin/broctl status
+else
+printf "Installazione bro annullato\n"
+fi
 ######## FINE PASSO 6
 ######## PASSO 7: Se tutto ok, allora parte l'ascolto dei log sulla porta 799
 cd /home/ssllogmux
@@ -121,13 +137,15 @@ chmod +x start
 clear
 printf "\n\n\tScript By David Isztl & Michel Basili\n\n"
 printf "Complimenti, molto probabilmente l'installazione è andata a buon fine.\n"
-printf "Come testare se funziona:\n\tAprire un altro terminale e lanciare il comando: nc 127.0.0.1 799\n"
-printf "Se funziona allora nel file /home/ssllogmux/ssllogmux.log ci sarà tutto ciò che scriverete.\n\n\n"
-#printf "<-------------Server in ascolto...------------->\n"
-#./start
-printf "Fra 10 secondi mi killo...\n"
-sleep 10
+printf "Come testare se funziona:\n\tDopo il ravvio della macchina andare nella cartela di ssllogmux (default:"/home/ssllogmux") e lanciare ./start\n\tSuggessivamente vedrete tutte le sessioni ssh monitorati.\n"
+printf "Se funziona allora nel file /home/ssllogmux/ssllogmux.log ci sarà tutto ciò che passa per le sessioni ssh.\n\n\n"
+read -p "Vuoi riavviare automatcamente? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+then
 reboot
+else
+printf "Riavvio manuale\n"
+fi
 ######## FINE PASSO 7
 else
 printf "Installazione annullata\n"
