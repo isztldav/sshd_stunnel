@@ -1,4 +1,5 @@
 #!/bin/bash
+passaggi_saltati = 0
 printf "Benvenuto, script by David Isztl & Michel Basili\n"
 printf "Questo script installerà:\n\tSSHD modificato\n\tSTUNNEL\n\tssllogmux\n\tBRO 2.0\nCon le relative dipendenze\n"
 printf "Script testato su Centos 6.x\n"
@@ -35,6 +36,7 @@ chkconfig --add /etc/init.d/sshd
 cp /usr/local/etc/sshd_config /etc/ssh/sshd_config
 service sshd restart
 else
+let "passaggi_saltati += 1"
 printf "Installazione openssh 5.8 modificato annullato\n"
 fi
 unset prompt
@@ -60,6 +62,7 @@ chmod +x /etc/init.d/stunnel
 chkconfig --add stunnel
 service stunnel start
 else
+let "passaggi_saltati += 1"
 printf "Installazione stunnel annullato\n"
 fi
 unset prompt
@@ -73,6 +76,7 @@ wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunn
 chmod +x cpan_install_auto
 ./cpan_install_auto
 else
+let "passaggi_saltati += 1"
 printf "Installazione cpan annullato\n"
 fi
 unset prompt
@@ -95,6 +99,7 @@ wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunn
 mv script4 start
 chmod +x start
 else
+let "passaggi_saltati += 1"
 printf "Installazione ssllogmux annullato\n"
 fi
 unset prompt
@@ -131,16 +136,17 @@ cp ssh_core /opt/bro/share/bro/site/sshd_core.bro
 /opt/bro/bin/broctl start
 /opt/bro/bin/broctl status
 else
+let "passaggi_saltati += 1"
 printf "Installazione bro annullato\n"
 fi
 unset prompt
 ######## FINE PASSO 6
 ######## PASSO 7: Se tutto ok, allora parte l'ascolto dei log sulla porta 799
-cd /home/ssllogmux
-wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
-mv script4 start
-chmod +x start
 clear
+if (())$passaggi_saltati >= 1))
+then
+	printf "\t\tATTENZIONE, hai saltato %i passaggi\n" $passaggi_saltati
+fi
 printf "\n\n\tScript By David Isztl & Michel Basili\n\n"
 printf "Complimenti, molto probabilmente l'installazione è andata a buon fine.\n"
 printf "Come testare se funziona:\n\tDopo il ravvio della macchina andare nella cartela di ssllogmux (default:"/home/ssllogmux") e lanciare ./start\n\tSuggessivamente vedrete tutte le sessioni ssh monitorati.\n"
