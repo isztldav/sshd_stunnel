@@ -13,10 +13,11 @@ cd /home
 wget --no-check-certificate http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 rpm -ivh epel-release-6-8.noarch.rpm
 yum install libnet cpan cmake nc -y
+unset prompt
 ######## FINE PASSO 1
 ######## PASSO 2: Installazione openssh 5.8 modificato
 read -p "Vuoi installare openssh 5.8 modificato? <y/N> " prompt
-if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+if [[ $prompt == "y" || $prompt1 == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
 then
 cd /home
 wget --no-check-certificate  https://auditing-sshd.googlecode.com/files/openssh-5.8p1-hpn13v11-3.10.tar.gz
@@ -36,6 +37,7 @@ service sshd restart
 else
 printf "Installazione openssh 5.8 modificato annullato\n"
 fi
+unset prompt
 ######## FINE PASSO 2
 ######## PASSO 3: Installazione stunnel
 read -p "Vuoi installare stunnel? <y/N> " prompt
@@ -60,6 +62,7 @@ service stunnel start
 else
 printf "Installazione stunnel annullato\n"
 fi
+unset prompt
 ######## FINE PASSO 3
 ######## PASSO 4: Installazione cpan
 read -p "Vuoi installare cpan? <y/N> " prompt
@@ -72,6 +75,7 @@ chmod +x cpan_install_auto
 else
 printf "Installazione cpan annullato\n"
 fi
+unset prompt
 ######## FINE PASSO 4
 ######## PASSO 5: Installazione ssllogmux
 read -p "Vuoi installare ssllogmux? <y/N> " prompt
@@ -93,6 +97,7 @@ chmod +x start
 else
 printf "Installazione ssllogmux annullato\n"
 fi
+unset prompt
 ######## FINE PASSO 5
 ######## PASSO 6: Installazione di bro
 read -p "Vuoi installare bro? <y/N> " prompt
@@ -128,6 +133,7 @@ cp ssh_core /opt/bro/share/bro/site/sshd_core.bro
 else
 printf "Installazione bro annullato\n"
 fi
+unset prompt
 ######## FINE PASSO 6
 ######## PASSO 7: Se tutto ok, allora parte l'ascolto dei log sulla porta 799
 cd /home/ssllogmux
