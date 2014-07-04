@@ -101,6 +101,7 @@ chmod +x start
 cd /etc/init.d/
 wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/ssllogmux
 chmod +x ssllogmux
+chkconfig --add ssllogmux
 else
 let "passaggi_saltati += 1"
 printf "Installazione ssllogmux annullato\n"
