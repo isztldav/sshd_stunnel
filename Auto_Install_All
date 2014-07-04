@@ -94,10 +94,6 @@ cat privatekey.pem cacert.pem >> /home/ssllogmux/server-key.pem
 cat privatekey.pem cacert.pem >> /home/ssllogmux/SSL.pm
 chmod 600 /home/ssllogmux/server-key.pem
 chmod 600 /home/ssllogmux/SSL.pm
-cd /home/ssllogmux
-wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
-mv script4 start
-chmod +x start
 cd /etc/init.d/
 wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/ssllogmux
 chmod +x ssllogmux
