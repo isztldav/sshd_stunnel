@@ -1,0 +1,90 @@
+#Autor: Michel Basili
+
+#! /bin/sh
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+LOCK_FILE=/var/run/ssllogmux.pid
+
+start() {
+	if [ -f $LOCK_FILE ];
+		then
+			echo "ssllogmux is already running!"
+			exit 0
+		else
+			echo "Starting ssllogmux:"
+			cd /home/ssllogmux
+			sh start
+			echo "press Enter for backbround!!"
+	fi
+}
+
+stop() {
+	if [ -f $LOCK_FILE ];
+                 then
+			echo "Stopping ssllogmux:"
+			cat /var/run/ssllogmux.pid | xargs kill
+			for i in {1..70}
+			do
+				echo -n "."
+				sleep 1
+			done
+			echo "" 
+                else
+                        echo "ssllogmux is already Stopping!"
+			exit 0
+        fi
+}
+
+status() {
+	if [ -f $LOCK_FILE ];
+                 then
+                        echo "ssllogmux is running!"
+		 else
+                        echo "ssllogmux is stopping!"
+	fi
+}
+
+restart() {
+	if [ -f $LOCK_FILE ];
+                 then
+                        echo "Stopping ssllogmux:"
+			cat /var/run/ssllogmux.pid | xargs kill
+			for i in {1..70}
+                        do
+                                echo -n  "."
+                                sleep 1
+                        done
+			echo ""
+			echo "Starting ssllogmux :"
+                        cd /home/ssllogmux
+			sh start
+			echo "press Enter for background!!"
+                else
+                        echo  "Starting ssllogmux :"
+                        cd /home/ssllogmux
+			sh start
+			echo "press Enter for background!!"
+        fi
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+	status
+        ;;
+    restart)
+     	restart
+        ;;
+    *)
+        echo "Usage:  {start|stop|status|restart"
+        exit 1
+        ;;
+esac
+exit 1
