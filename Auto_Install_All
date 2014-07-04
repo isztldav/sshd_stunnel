@@ -98,6 +98,9 @@ cd /home/ssllogmux
 wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/script4
 mv script4 start
 chmod +x start
+cd /etc/init.d/
+wget https://raw.githubusercontent.com/trakons/sshd_stunnel/master/ssllogmux
+chmod +x ssllogmux
 else
 let "passaggi_saltati += 1"
 printf "Installazione ssllogmux annullato\n"
@@ -149,7 +152,7 @@ then
 fi
 printf "\n\n\tScript By David Isztl & Michel Basili\n\n"
 printf "Complimenti, molto probabilmente l'installazione è andata a buon fine.\n"
-printf "Come testare se funziona:\n\tDopo il ravvio della macchina andare nella cartela di ssllogmux (default:"/home/ssllogmux") e lanciare ./start\n\tSuggessivamente vedrete tutte le sessioni ssh monitorati.\n"
+printf "Come testare se funziona:\n\tDopo il ravvio della macchina lanciare: service ssllogmux start\n\tSuggessivamente vedrete tutte le sessioni ssh monitorate.\n"
 printf "Se funziona allora nel file /home/ssllogmux/ssllogmux.log ci sarà tutto ciò che passa per le sessioni ssh.\n\n\n"
 read -p "Vuoi riavviare automatcamente? <y/N> " prompt
 if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
