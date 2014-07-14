@@ -84,7 +84,7 @@ case "$1" in
      	restart
         ;;
     *)
-        echo "Usage:  {start|stop|status|restart"
+        echo "Usage:  {start|stop|status|restart}"
         exit 1
         ;;
 esac
