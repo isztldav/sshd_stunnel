@@ -145,7 +145,20 @@ printf "Installazione bro annullato\n"
 fi
 unset prompt
 ######## FINE PASSO 6
-######## PASSO 7: Se tutto ok, allora parte l'ascolto dei log sulla porta 799
+######## PASSO 7: Istallazione script per decompilare il log ssh
+read -p "Vuoi installare ssh_log_decompiler? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
+then
+wget --no-check-certificate https://raw.githubusercontent.com/trakons/sshd_stunnel/master/decomp_ssl.py
+mv decomp_ssl.py /home/ssllogmux
+chmod +x /home/ssllogmux/decomp_ssl.py
+else
+let "passaggi_saltati += 1"
+printf "Installazione cpan annullato\n"
+fi
+unset prompt
+######## FINE PASSO 7
+######## PASSO 8: Se tutto ok, allora parte l'ascolto dei log sulla porta 799
 clear
 if (($passaggi_saltati >= 1))
 then
@@ -155,6 +168,7 @@ printf "\n\n\tScript By David Isztl & Michel Basili\n\n"
 printf "Complimenti, molto probabilmente l'installazione è andata a buon fine.\n"
 printf "Come testare se funziona:\n\tDopo il ravvio della macchina lanciare: service ssllogmux start\n\tSuggessivamente vedrete tutte le sessioni ssh monitorate.\n"
 printf "Se funziona allora nel file /home/ssllogmux/ssllogmux.log ci sarà tutto ciò che passa per le sessioni ssh.\n\n\n"
+printf "Usa /home/ssllogmux/decomp_ssl.py per decompilare il log"
 read -p "Vuoi riavviare automatcamente? <y/N> " prompt
 if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
 then
@@ -162,7 +176,7 @@ reboot
 else
 printf "Riavvio manuale\n"
 fi
-######## FINE PASSO 7
+######## FINE PASSO 8
 else
 printf "Installazione annullata\n"
   exit 0
