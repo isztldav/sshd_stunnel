@@ -3,7 +3,6 @@
 
 # Librerie per il corretto funzionamento
 import urllib
-import os
 
 def analizza(t):
     pezzi = t.split(" ")
@@ -49,7 +48,7 @@ def analizza(t):
                      print "Port:", element[1]
 
 #Leggi tutto il file di log
-f = open(os.path.expanduser('~/Desktop/ssllogmux.log')) # Directory log
+f = open('ssllogmux.log') # Directory log
 for line in iter(f):
     analizza(line) # Dai la riga del log alla funzione che lo analizzera'
 f.close()
